@@ -3,26 +3,26 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Welcome to Jekyll! | Your awesome title</title>
+<title>Hidden Geometry of Large Language Models | Advancing Interpretability of Deep Learning</title>
 <meta name="generator" content="Jekyll v4.3.2" />
-<meta property="og:title" content="Welcome to Jekyll!" />
+<meta property="og:title" content="Hidden Geometry of Large Language Models" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated." />
-<meta property="og:description" content="You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated." />
-<link rel="canonical" href="/jekyll/update/2023/10/28/welcome-to-jekyll.html" />
-<meta property="og:url" content="/jekyll/update/2023/10/28/welcome-to-jekyll.html" />
-<meta property="og:site_name" content="Your awesome title" />
+<meta name="description" content="This post is based on a paper with Jiajun Song." />
+<meta property="og:description" content="This post is based on a paper with Jiajun Song." />
+<link rel="canonical" href="http://localhost:4000/jekyll/update/2023/10/28/welcome-to-jekyll.html" />
+<meta property="og:url" content="http://localhost:4000/jekyll/update/2023/10/28/welcome-to-jekyll.html" />
+<meta property="og:site_name" content="Advancing Interpretability of Deep Learning" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2023-10-28T20:53:19-05:00" />
+<meta property="article:published_time" content="2023-10-28T22:00:00-05:00" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Welcome to Jekyll!" />
+<meta property="twitter:title" content="Hidden Geometry of Large Language Models" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-28T20:53:19-05:00","datePublished":"2023-10-28T20:53:19-05:00","description":"You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.","headline":"Welcome to Jekyll!","mainEntityOfPage":{"@type":"WebPage","@id":"/jekyll/update/2023/10/28/welcome-to-jekyll.html"},"url":"/jekyll/update/2023/10/28/welcome-to-jekyll.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-28T22:00:00-05:00","datePublished":"2023-10-28T22:00:00-05:00","description":"This post is based on a paper with Jiajun Song.","headline":"Hidden Geometry of Large Language Models","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/jekyll/update/2023/10/28/welcome-to-jekyll.html"},"url":"http://localhost:4000/jekyll/update/2023/10/28/welcome-to-jekyll.html"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Your awesome title" /></head>
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Advancing Interpretability of Deep Learning" /></head>
 <body><header class="site-header" role="banner">
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/">Your awesome title</a><nav class="site-nav">
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Advancing Interpretability of Deep Learning</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
         <label for="nav-trigger">
           <span class="menu-icon">
@@ -32,7 +32,7 @@
           </span>
         </label>
 
-        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+        <div class="trigger"><a class="page-link" href="/about/">About me</a></div>
       </nav></div>
 </header>
 <main class="page-content" aria-label="Content">
@@ -40,30 +40,187 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Welcome to Jekyll!</h1>
+    <h1 class="post-title p-name" itemprop="name headline">Hidden Geometry of Large Language Models</h1>
     <p class="post-meta">
-      <time class="dt-published" datetime="2023-10-28T20:53:19-05:00" itemprop="datePublished">Oct 28, 2023
+      <time class="dt-published" datetime="2023-10-28T22:00:00-05:00" itemprop="datePublished">Oct 28, 2023
       </time></p>
   </header>
 
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
   <div class="post-content e-content" itemprop="articleBody">
-    <p>You’ll find this post in your <code class="language-plaintext highlighter-rouge">_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code class="language-plaintext highlighter-rouge">jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
+    <p>This post is based on a <a href="https://arxiv.org/abs/2310.04861">paper</a> with <a href="https://github.com/JiajunSong629">Jiajun Song</a>.</p>
 
-<p>Jekyll requires blog post files to be named according to the following format:</p>
+<h2 id="can-we-trust-large-language-models">Can we trust Large Language Models?</h2>
+<p>If you are reading this blog, most probably you know what <a href="https://openai.com/chatgpt">ChatGPT</a> is. “<em>How fascinating!</em>” You may exclaim. Yes, it is indeed magical to interact with a chatbot that seemingly understand our languages. The more we play with ChatGPT, the more surprises we have: it is super knowledgeable, good at drafting emails, polishing essays, writing codes, and so on!</p>
 
-<p><code class="language-plaintext highlighter-rouge">YEAR-MONTH-DAY-title.MARKUP</code></p>
+<p>But then wait … when you give elementary-level mathematical questions—as simple as multiplication—as prompts, it sometimes outputs wrong solutions. There are many pitfuls: LLMs often <a href="https://apnews.com/article/artificial-intelligence-hallucination-chatbots-chatgpt-falsehoods-ac4672c5b06e6f91050aa46ee731bcf4">hallucinate</a>, and they cannot infer <a href="https://arxiv.org/pdf/2309.12288.pdf">basic relations</a> such as “A is B” implying “B is A” . So we ask—</p>
 
-<p>Where <code class="language-plaintext highlighter-rouge">YEAR</code> is a four-digit number, <code class="language-plaintext highlighter-rouge">MONTH</code> and <code class="language-plaintext highlighter-rouge">DAY</code> are both two-digit numbers, and <code class="language-plaintext highlighter-rouge">MARKUP</code> is the file extension representing the format used in the file. After that, include the necessary front matter. Take a look at the source for this post to get an idea about how it works.</p>
+<ul>
+  <li>Can we trust ChatGPT as well as other Large Lauguage Models (LLMs)?</li>
+  <li>Is it possible that LLMs contain harmful information or bias?</li>
+  <li>Shouldn’t we worry that LLMs may distort information and influence people’s opinons?</li>
+</ul>
 
-<p>Jekyll also offers powerful support for code snippets:</p>
+<p>Indeed, if our future society depends heavily on an advancing technology, there are good reasons to be concerned about the worst case scenarios (think about industrial revoluation and global warming).</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-  <span class="nb">puts</span> <span class="s2">"Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span>
-<span class="k">end</span>
-<span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
-<span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></code></pre></figure>
+<p>There are now heated <a href="https://www.youtube.com/watch?v=byYlC2cagLw">discussions</a> about ChatGPT. AI leaders such as Yoshua Bengio, Geoffrey Hinton, Andrew Yao are calling for safe AI systems in a recent <a href="https://managing-ai-risks.com/">post</a>.</p>
 
-<p>Check out the <a href="https://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>
+<h2 id="towards-mechanistic-explanation">Towards mechanistic explanation</h2>
+
+<h3 id="reflecting-on-history-emergence-of-black-box-models">Reflecting on history: Emergence of black-box models</h3>
+<p>When I first took courses in data analysis as an undergrad about a decade ago, every method is based on principled generative models: assuming that our data follow a linear model with observational noise, then we know how to extract signals from data, often in an <em>optimal</em> way. Moreover, we reasonably believe that data usually possess nice <em>geometric structures</em>, such as <strong>smoothness</strong> and <strong>sparsity</strong>. Principled mathematical analysis leads to ubiquitous methods such as <a href="https://www.jstor.org/stable/2346178">LASSO</a> and <a href="https://ieeexplore.ieee.org/document/1614066">compressed sensing</a>.</p>
+
+<p>However, when data are very complex—think about images, audios, texts—we are limited by our abilities to model the data precisely. An early neural network model, <a href="https://papers.nips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html">AlexNet</a>, shows that large models with multiple layers are very efficient at capturing nonlinearity. This marks the beginning of the deep learning revolutionary.</p>
+
+<p>Neural networks as black-box models are highly accurate, yet much less interpretable. <strong>Lack of interpretability</strong> is a persistent and crucial issue in LLMs, as people build larger and larger models based on modules we don’t quite understand.</p>
+
+<h3 id="visualizing-attention-matrix">Visualizing attention matrix</h3>
+
+<p>Since the <a href="https://arxiv.org/abs/1706.03762">Attention is all you need</a> paper, <strong>Transformers</strong> become the de facto building blocks of LLMs. Sometimes we can peep inside the model by plotting the <strong>attention matrices</strong>, which suggest how information of words in a sequence is combined. Mathematical speaking, given embeddings (or hidden states) \(\boldsymbol{x}_1 \ldots \boldsymbol{x}_T \in \mathbb{R}^d\), we stack them into a matrix \(\boldsymbol{X} = [\boldsymbol{x}_1, \ldots, \boldsymbol{x}_T]^\top \in \mathbb{R}^{T \times d}\) and compute a \(T \times T\) attention matrix</p>
+
+\[\begin{equation}
+
+\boldsymbol{A} = \mathrm{softmax}\left(\frac{\boldsymbol{X} \boldsymbol{W}^q (\boldsymbol{W}^k)^\top \boldsymbol{X}^\top}{\sqrt{d_{\mathrm{head}}}} \right)\, . \tag{1} \label{attn}
+
+\end{equation}\]
+
+<p>Here, \(d_{\mathrm{head}}\) is some dimension, \(\boldsymbol{W}^q\) and \(\boldsymbol{W}^k\) are trained weights in transformers, and \(\mathrm{softmax}\) applies the standard softmax</p>
+
+\[\begin{aligned}
+ \left( \mathrm{softmax}(\boldsymbol{z}) \right)_{k} := \frac{e^{z_k}}{\sum_{j} e^{z_j}}, \qquad \text{where}~\boldsymbol{z} \in \mathbb{R}^T 
+\end{aligned}\]
+
+<p>to every row vector of the matrix inside the paranthesis. For a given input sequence, visualizing the attention matrices (there are many in a transformer!) helps us to understand how information is processed. For example, I pass some random sequence to <a href="">GPT-2</a>, and examine the associated attention matrix \(\boldsymbol{A}\) from layer 5, head 1. Below I can use separate heatmaps (left) to visualize three selected attention matrices (Layer 0, Head 1; Layer 2, Head 2; Layer 5, Head 1), and overlapping three bipartite graphs (right) to visualize the same three matrices.</p>
+
+<p><img src="/assets/images/Blog-attn-drawio.png" alt="Three attention heads" /></p>
+
+<p>On the right side of the bipartite graph, each token is connected to tokens on the left. The thicker a line is, the more information we assemble to form the hidden states in the next layer. For example, the red lines (based on one attention matrix) mean that a token prefers to focus on the previous token.</p>
+
+<h3 id="interpretability-some-recent-progress">Interpretability: some recent progress</h3>
+
+<p><a href="https://www.anthropic.com/">Anthropic</a> pinoneers <strong>Mechanistic Interpretability</strong> of neural networks, in which weights and activations are examined and analyzed closely. By studying transformers and extensive experiments, they identified that an interesting component, called the induction head, exists universally in popular trained transformered</p>
+
+<p><a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html"><strong>Induction Head</strong></a> is a circuit—often a collection of several attention heads—within a transformer than functions the <em>copying</em> mechanism: given a sequence that contains tokens [A], [B] … [A], an induction head outputs values that leads to predicting [B]. In other words, induction heads complete an observed pattern by looking at the previous tokens in a sequence.</p>
+
+<p>A surprising phenomenon is that induction heads function as copying mechanisms even when [A], [B] are drawn from distributions that are totally different from training data! In blabla, we already saw an exmaple of induction head: once observing [A], [B] … [A], the attention heads focus heavily on the adjacent token [B] of the previous identical token [A]. Note that the input sequence is a repetition of independent random tokens, yet GPT-2 is trained on natural languages.</p>
+
+<div style="text-align: center;">
+  <img src="/assets/images/induction-head.gif" alt="Attention visualization for 3 attnetion heads simultaneously" width="350" />
+</div>
+<!--![Attention visualization for 3 attnetion heads simultaneously](/assets/images/induction-head.gif)-->
+
+<p>Analyzing abstract abilities like induction heads in trained transformers opens the door to understanding <a href="https://en.wikipedia.org/wiki/Prompt_engineering">in-context learning</a> and other emergent abilities of LLMs. The more we understand, the better we are at reining in LLMs before large AI sysmtems wreak havoc!</p>
+
+<h2 id="from-heuristics-to-uncovering-hidden-geometry">From heuristics to uncovering hidden geometry</h2>
+
+<p>When people build new neural network architectures or devise new optimization tricks, they often rely on heuristics which vaguely describe the information some activations or weights contain. For example, transformers consist of many <em>self-attention layers</em>, each of which is believed to <strong>contextualize</strong> features progressively, i.e., combining information within contexts to form high-level features.</p>
+
+<p>If we examine the arguments people make in the literature, an implicit and recurring assumption seems to be the following:</p>
+
+<p style="text-align: center;">
+<i>Hidden states (or activations) in intermediate layers of transformers carry certain information about</i> <b>input sequence contexts</b>, <i>and certain information about</i> <b>token positions</b>.
+</p>
+
+<p>Can we understand more precisely what information hidden states contain?</p>
+
+<h3 id="anova-inspired-decomposition">ANOVA-inspired decomposition</h3>
+
+<p>Suppose that we are given an input sequence, where each token has an <em>embedding</em>, that is, representation by numerical values \(\boldsymbol{h_t}^{(0)} \in \mathbb{R}^d\) where \(t\) is an integer indicating the position of the token. Let us write each layer of a transformer as \(\mathrm{TFLayer}_\ell\), which maps a sequence of hidden states to another for a given initial embeddings \(\boldsymbol{h}_1^{(\ell)}, \ldots, \boldsymbol{h}_T^{(\ell)} \in \mathrm{R}^d\):</p>
+
+\[\begin{aligned}
+  \boldsymbol{h}_1^{(\ell+1)}, \ldots, \boldsymbol{h}_T^{(\ell+1)} \leftarrow \mathrm{TFLayer}_\ell \left( \boldsymbol{h}_1^{(\ell)}, \ldots, \boldsymbol{h}_T^{(\ell)} \right)
+\end{aligned}\]
+
+<p>Let’s sample as many sequences as we want, feed each sequence through a trained transformer, and collect all these hidden states (or intermediate-layer embeddings) as an array \(\boldsymbol{h}^(\ell) \in \mathbb{R}^{C \times T \times d}\). Here \(C\) is the number of sequences we sample, \(T\) is the sequence length, and \(d\) is the dimension of hidden states.</p>
+
+<p>A classical idea in statistics, known as <a href="https://en.wikipedia.org/wiki/Two-way_analysis_of_variance">ANOVA</a>, is to study the <em>mean effects</em> of each factor in a collection of observations. Based on \(\boldsymbol{h}^{(\ell)}\), we can calculate the mean vectors for every position and for every input sequence.</p>
+
+\[\begin{aligned}
+  \boldsymbol{pos}_t^{(\ell)} := \frac{1}{C} \sum_{c=1}^C \boldsymbol{h}_{t,c}^{(\ell)} - \boldsymbol{\mu}^{(\ell)} \in \mathbb{R}^d , \qquad \boldsymbol{ctx}_c^{(\ell)} := \frac{1}{T} \sum_{t=1}^T \boldsymbol{h}_{t,c}^{(\ell)} - \boldsymbol{\mu}^{(\ell)}  \in\mathbb{R}^d
+\end{aligned}\]
+
+<p>where \(\boldsymbol{\mu}^{(\ell)} := \frac{1}{CT} \sum_{c,t} \boldsymbol{h}_{t,c}^{(\ell)}\) is the global mean vector. Using these mean vectors, we can decompose hidden states into interpretable components \(\boldsymbol{pos}_t^{(\ell)}\) and \(\boldsymbol{ctx}_c^{(\ell)}\), which we will call <strong>positional vectors</strong> and <strong>context vectors</strong>.</p>
+
+<h3 id="discovering-hidden-geometry">Discovering hidden geometry</h3>
+
+<p><ins> <b>Finding 1.</b> </ins> What does the vectors \(\boldsymbol{pos}_1^{(\ell)}, \ldots \boldsymbol{pos}_T^{(\ell)}\) look like? For each fixed \(\ell\), we can perform <a href="https://en.wikipedia.org/wiki/Principal_component_analysis">Principal Component Analysis</a> (or PCA), which projects multidimensional vectors onto a 2D plane. Using standard GPT-2 as the trained transformer to compute mean vectors, we apply PCA and get the following plots.</p>
+
+<p><img src="/assets/images/PCA_none_new.png" alt="PCA visualization of positional mean vectors in each layer" /></p>
+
+<p>Each one of the blue points—which look like a curve but are formed by individual points—correspond to a positional vector. Each red point correspond to \(\boldsymbol{h}_{c,t}^{(\ell)} - \boldsymbol{pos}_t^{(\ell)}\), namely component unexplained by the positional vectors. Light colors mean the start of a sequence (small \(t\)) and dark colors mean the end of a sequence (large \(t\)).</p>
+
+<p>So we just discovered something visably nice: positional vectors form a continuous and spiral shape. Moreover, we can use a form of <a href="https://en.wikipedia.org/wiki/Singular_value_decomposition">spectral analysis</a> and <a href="https://en.wikipedia.org/wiki/Discrete_Fourier_transform">Fourier analysis</a> to  show that they lie in an approximately <strong>low-dimensional subspace</strong>, and are mostly <strong>low-frequency</strong> signals! To sum up, this means</p>
+
+<p style="text-align: center;">
+<i>Within hidden states, positional information resides in a low-dimensional subspace and forms low-frequency signals.</i>
+</p>
+
+<p>Some extensive experiments suggest that this geometric structure is consistent across layers, transformer models, and datasets.</p>
+
+<p><ins> <b>Finding 2.</b> </ins> What about context vectors? If we draw input sequences from various documents, it is natural to expect sequences from the similar documents to have similar contexts. Indeed, this is the idea behind the classical <a href="https://en.wikipedia.org/wiki/Topic_model">topic models</a>.</p>
+
+<p>Let’s find out. First, we normalize the positional vectors and context vectors:</p>
+
+\[\begin{aligned}
+  \boldsymbol{P} = \Big[ \frac{\mathbf{pos}_1}{\| \mathbf{pos}_1\|}, \ldots, \frac{\mathbf{pos}_T}{\| \mathbf{pos}_T\|} \Big] , \qquad  \boldsymbol{C} = \Big[ \frac{\mathbf{ctx}_1}{\| \mathbf{ctx}_1\|}, \ldots, \frac{\mathbf{ctx}_C}{\| \mathbf{ctx}_C\|} \Big]
+\end{aligned}\]
+
+<p>and then calculate the Gram matrix \(\boldsymbol{G} = [\boldsymbol{P}, \boldsymbol{C}]^\top [\boldsymbol{P}, \boldsymbol{C}]\) of size \((T+C) \times (T+C)\).</p>
+
+<p><img src="/assets/images/gram_openwebtext_topic_gpt2.png" alt="Gram matrix" /></p>
+
+<p>In each of the 12 plots, we feed input sequences sampled from 4 documents into GPT-2, extract hidden states \(\boldsymbol{h}^{(\ell)}\), and then calculate the Gram matrix for each layer. The block structure on the bottom right of the Gram matrix indicates <strong>clustering</strong> structure of context vectors.</p>
+
+<p style="text-align: center;">
+<i>Context information across different input sequences form cluster structures, which depend on sources sequences are sampled from.</i>
+</p>
+
+<p><ins> <b>Finding 3.</b> </ins> Now we look at the cross interaction between positional vectors and context vectors. The cosine similarities (namely inner products between normalized vectors) are showns in the top right part of the Gram matrices. The values are close to zero, which means the positional vectors and the context vectors are <strong>nearly orthogonal</strong>! This geometric structure is known as <a href="https://en.wikipedia.org/wiki/Mutual_coherence_(linear_algebra)">mutual incoherence</a> in the classical literature of compressed sensing, dictionary learning, low-rank matrix recovery, and so on.</p>
+
+<p>Incoherence structure is known to be “algorithm-friendly”, since it generally makes recovering complementary bases much easier. Perhaps this is why training neural networks with stochastic gradient descent can capture complex associations in texts easily. While I do not have a complete theory, preliminary analysis does suggest the following.</p>
+
+<p style="text-align: center;">
+<i>With incoherence structure, interactions between positional vectors and context vectors are more flexible.</i>
+</p>
+
+<h2 id="smoothness-key-structure-in-natural-languages">Smoothness: key structure in natural languages</h2>
+
+<p>It seems that we have made progress toward decipher the mechanism of transformers. <em>But do we understand natural languages better?</em> Natural languages as text-based data are used for training transformers? After all, if we had trained transformers with pure random data, we shouldn’t expect meaning structure at all!</p>
+
+<p>In Finding 1, we identified a low-rank and low-frequency positional structure. It is well understood that this structure is intimately connected to the inherent smoothness of data. Following this philosophy, we provide some analysis and implication in our <a href="https://arxiv.org/abs/2310.04861">paper</a>, which is summarized by the following links.</p>
+
+<p><img src="/assets/images/link.png" alt="Link" /></p>
+
+<p>What is the picture without smoothness? Consider a very simple arithemetic tasks: the input sequence is “a+b=c” where “a” and “b” are digits of length between 5 and 10. The following shows an example of the input sequence</p>
+
+<p style="text-align: center;">
+'6985972+2780004021=2786989993'
+</p>
+
+<p>The correct solution “c” is obviously sensitive to positions of individual digits; if we shift any digit by 1, generally we get completely wrong solution.</p>
+
+<h3 id="failure-of-length-generalization">Failure of length generalization</h3>
+
+<p>By adapting an implementation of GPT-style model <a href="https://github.com/karpathy/nanoGPT">NanoGPT</a>, we are able to train a smaller scale Transformer for the addition problem. By drawing suffiicient training data, the validation error drops to zero. But when we sample  “a” and “b” with a different length—smaller or larger number of digits—the trained transformer performs disastrously! This is a typical failure of <a href="https://arxiv.org/pdf/2207.04901.pdf">length generalization</a> (or extrapolation).</p>
+
+<p>Let us examine what is going wrong in our trained transformer. We focus on two attention heads: Layer 0 Head 1, and Layer 2 Head 3. In the plots below, each row shows the position-position Gram matrix, the QK matrix (namely matrix before applying softmax in Eqn. \ref{attn}), and the attention matrix.</p>
+
+<p><img src="/assets/images/Blog-smoothness-drawio.png" alt="Smoothness" /></p>
+
+<p><strong>Discontinuity</strong> is a visible structure in our transformer trained on addition inputs. If digits are shortened, lengthened, or shifted in the test data, it will be hard for the model to locate the positions correctly! It seems reasonable to</p>
+
+<p style="text-align: center;">
+<i>For math-related tasks, instability issues may arise from discontinuity patterns inside a transformer, making generalization and extrapolation fail.</i>
+</p>
+
+<h2 id="final-thoughts">Final thoughts</h2>
+
+<p>Many LLMs are being developed and employed in applications every month. No doubt, interpretability-enhanced LLMs would make our society much safer. While lots of things need to be done, recent research does provide hope for more interpretable models. Here are some questions I think are interesting to explore.</p>
+
+<ol>
+  <li>How does geometry in transformers increase interpretability? Can we devise informative visualization methods and reliable measurements to monitor what is happening inside black-box models?</li>
+  <li>Can we characterize the smoothness of training data more precisely? If we observe discontinuity patterns, how do we overcome the shortcoming of current transformer models?</li>
+</ol>
 
 
   </div><a class="u-url" href="/jekyll/update/2023/10/28/welcome-to-jekyll.html" hidden></a>
@@ -75,19 +232,19 @@
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">Your awesome title</h2>
+    <h2 class="footer-heading">Advancing Interpretability of Deep Learning</h2>
 
     <div class="footer-col-wrapper">
       <div class="footer-col footer-col-1">
         <ul class="contact-list">
-          <li class="p-name">Your awesome title</li><li><a class="u-email" href="mailto:your-email@example.com">your-email@example.com</a></li></ul>
+          <li class="p-name">Advancing Interpretability of Deep Learning</li><li><a class="u-email" href="mailto:yiqiao.zhong@wisc.edu">yiqiao.zhong@wisc.edu</a></li></ul>
       </div>
 
-      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/jekyll"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">jekyll</span></a></li><li><a href="https://www.twitter.com/jekyllrb"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">jekyllrb</span></a></li></ul>
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/Yiqiao-Zhong"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">Yiqiao-Zhong</span></a></li><li><a href="https://www.twitter.com/yiqiao_zhong"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">yiqiao_zhong</span></a></li></ul>
 </div>
 
       <div class="footer-col footer-col-3">
-        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+        <p>Can we understand the inner workings of black-box models? The goal of the blogs is to explore structures and analyze empirical phenoemna by scientific experiments on deep learning. </p>
       </div>
     </div>
 
