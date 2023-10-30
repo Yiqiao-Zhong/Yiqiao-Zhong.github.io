@@ -90,9 +90,9 @@
  \left( \mathrm{softmax}(\boldsymbol{z}) \right)_{k} := \frac{e^{z_k}}{\sum_{j} e^{z_j}}, \qquad \text{where}~\boldsymbol{z} \in \mathbb{R}^T 
 \end{aligned}\]
 
-<p>to every row vector of the matrix inside the paranthesis. For a given input sequence, visualizing the attention matrices (there are many in a transformer!) helps us to understand how information is processed. For example, I pass some random sequence to <a href="">GPT-2</a>, and examine the associated attention matrix \(\boldsymbol{A}\) from layer 5, head 1. Below I can use separate heatmaps (left) to visualize three selected attention matrices (Layer 0, Head 1; Layer 2, Head 2; Layer 5, Head 1), and overlapping three bipartite graphs (right) to visualize the same three matrices.</p>
+<p>to every row vector of the matrix inside the paranthesis. For a given input sequence, visualizing the attention matrices (there are many in a transformer!) helps us to understand how information is processed. For example, I pass some random sequence to <a href="https://huggingface.co/docs/transformers/model_doc/gpt2">GPT-2</a>, and examine the associated attention matrix \(\boldsymbol{A}\) from layer 5, head 1. It is worthwhile to note that many GPT-style transformers (including chatGPT!) are based on <strong>next-token prediction</strong>, so each token is only allowed to attend to past tokens in a sequence. Below I can use separate heatmaps (left) to visualize three selected attention matrices (Layer 0, Head 1; Layer 2, Head 2; Layer 5, Head 1), and overlapping three bipartite graphs (right) to visualize the same three matrices.</p>
 
-<p><img src="/assets/images/Blog-attn-drawio.png" alt="Three attention heads" /></p>
+<p><img src="/assets/images/Blog-attn-drawio.png" alt="Three attention heads\label{attn}" /></p>
 
 <p>On the right side of the bipartite graph, each token is connected to tokens on the left. The thicker a line is, the more information we assemble to form the hidden states in the next layer. For example, the red lines (based on one attention matrix) mean that a token prefers to focus on the previous token.</p>
 
@@ -102,12 +102,14 @@
 
 <p><a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html"><strong>Induction Head</strong></a> is a circuit—often a collection of several attention heads—within a transformer than functions the <em>copying</em> mechanism: given a sequence that contains tokens [A], [B] … [A], an induction head outputs values that leads to predicting [B]. In other words, induction heads complete an observed pattern by looking at the previous tokens in a sequence.</p>
 
-<p>A surprising phenomenon is that induction heads function as copying mechanisms even when [A], [B] are drawn from distributions that are totally different from training data! In blabla, we already saw an exmaple of induction head: once observing [A], [B] … [A], the attention heads focus heavily on the adjacent token [B] of the previous identical token [A]. Note that the input sequence is a repetition of independent random tokens, yet GPT-2 is trained on natural languages.</p>
+<p>A surprising phenomenon is that induction heads function as copying mechanisms even when [A], [B] are drawn from distributions that are totally different from training data! In Figure \ref{attn}, we already saw an exmaple of induction head: once observing [A], [B] … [A], the attention heads focus heavily on the adjacent token [B] of the previous identical token [A]. Note that the input sequence is a repetition of independent random tokens, yet GPT-2 is trained on natural languages.</p>
 
 <div style="text-align: center;">
   <img src="/assets/images/induction-head.gif" alt="Attention visualization for 3 attnetion heads simultaneously" width="350" />
 </div>
 <!--![Attention visualization for 3 attnetion heads simultaneously](/assets/images/induction-head.gif)-->
+
+<p>The above GIF highlights what each token attends to in the three attention heads as in Figure \ref{attn}.</p>
 
 <p>Analyzing abstract abilities like induction heads in trained transformers opens the door to understanding <a href="https://en.wikipedia.org/wiki/Prompt_engineering">in-context learning</a> and other emergent abilities of LLMs. The more we understand, the better we are at reining in LLMs before large AI sysmtems wreak havoc!</p>
 
@@ -125,7 +127,7 @@
 
 <h3 id="anova-inspired-decomposition">ANOVA-inspired decomposition</h3>
 
-<p>Suppose that we are given an input sequence, where each token has an <em>embedding</em>, that is, representation by numerical values \(\boldsymbol{h_t}^{(0)} \in \mathbb{R}^d\) where \(t\) is an integer indicating the position of the token. Let us write each layer of a transformer as \(\mathrm{TFLayer}_\ell\), which maps a sequence of hidden states to another for a given initial embeddings \(\boldsymbol{h}_1^{(\ell)}, \ldots, \boldsymbol{h}_T^{(\ell)} \in \mathrm{R}^d\):</p>
+<p>Suppose that we are given an input sequence, where each token has an <em>embedding</em>, that is, representation by numerical values \(\boldsymbol{h_t}^{(0)} \in \mathbb{R}^d\) where \(t\) is an integer indicating the position of the token. Let us write each layer of a transformer as \(\mathrm{TFLayer}_\ell\), which maps a sequence of hidden states to another for a given initial embeddings \(\boldsymbol{h}_1^{(\ell)}, \ldots, \boldsymbol{h}_T^{(\ell)} \in \mathbb{R}^d\):</p>
 
 \[\begin{aligned}
   \boldsymbol{h}_1^{(\ell+1)}, \ldots, \boldsymbol{h}_T^{(\ell+1)} \leftarrow \mathrm{TFLayer}_\ell \left( \boldsymbol{h}_1^{(\ell)}, \ldots, \boldsymbol{h}_T^{(\ell)} \right)
@@ -169,7 +171,7 @@
 
 <p><img src="/assets/images/gram_openwebtext_topic_gpt2.png" alt="Gram matrix" /></p>
 
-<p>In each of the 12 plots, we feed input sequences sampled from 4 documents into GPT-2, extract hidden states \(\boldsymbol{h}^{(\ell)}\), and then calculate the Gram matrix for each layer. The block structure on the bottom right of the Gram matrix indicates <strong>clustering</strong> structure of context vectors.</p>
+<p>In each of the 12 plots, we feed input sequences sampled from 4 documents into GPT-2, extract hidden states \(\boldsymbol{h}^{(\ell)}\), and then calculate the Gram matrix for each layer. The block structure on the bottom right of the Gram matrix indicates <strong>cluster</strong> structure of context vectors.</p>
 
 <p style="text-align: center;">
 <i>Context information across different input sequences form cluster structures, which depend on sources sequences are sampled from.</i>
