@@ -1,4 +1,182 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-10-29T21:37:52-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Advancing Interpretability of Deep Learning</title><subtitle>Can we understand the inner workings of black-box models? The goal of the blogs is to explore structures and analyze empirical phenoemna by scientific experiments on deep learning. </subtitle><entry><title type="html">Hidden Geometry of Large Language Models</title><link href="http://localhost:4000/jekyll/update/2023/10/28/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Hidden Geometry of Large Language Models" /><published>2023-10-28T22:00:00-05:00</published><updated>2023-10-28T22:00:00-05:00</updated><id>http://localhost:4000/jekyll/update/2023/10/28/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2023/10/28/welcome-to-jekyll.html"><![CDATA[<p>This post is based on a <a href="https://arxiv.org/abs/2310.04861">paper</a> with <a href="https://github.com/JiajunSong629">Jiajun Song</a>.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-02-19T02:07:40-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Advancing Interpretability of Deep Learning</title><subtitle>Can we understand the inner workings of black-box models? The goal of the blogs is to explore structures and analyze empirical phenoemna by scientific experiments on deep learning. </subtitle><entry><title type="html">Can LLMs solve novel tasks? Induction heads, composition, and out-of-distribution generalization</title><link href="http://localhost:4000/jekyll/update/2025/02/18/induction-heads.html" rel="alternate" type="text/html" title="Can LLMs solve novel tasks? Induction heads, composition, and out-of-distribution generalization" /><published>2025-02-18T21:00:00-06:00</published><updated>2025-02-18T21:00:00-06:00</updated><id>http://localhost:4000/jekyll/update/2025/02/18/induction-heads</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2025/02/18/induction-heads.html"><![CDATA[<p>This post is based on my recent <a href="https://www.pnas.org/doi/10.1073/pnas.2417182122">paper</a> published in PNAS. If you can’t get past the paywall, here is a <a href="https://arxiv.org/abs/2408.09503">arXiv version</a>.
+Big thanks to my collaborator <a href="https://github.com/JiajunSong629">Jiajun Song</a> and <a href="https://pages.cs.wisc.edu/~zxu444/home/">Zhuoyan Xu</a>!</p>
+
+<h2 id="can-llms-solve-novelty-tasks-the-agi-debate">Can LLMs solve novelty tasks? The AGI debate</h2>
+
+<p>Since ChatGPT, there have been a lot of polarizing opinons about LLMs. One focal point is the novelty of the generated texts by an LLM.</p>
+
+<p>Proponents point to the examples of creative solutions produced by ChatGPT and Claude, hailing these models as AGI or superhuman intelligence. Others argue that these models are simply parroting internet text and incapable of generating truly original generation.</p>
+
+<p>Well…it all depends on how you define novelty and creativity, in my opinon. In statistics, a standard and well-studied situation is to train a model on data drawn from the training distribution \(P_{\mathrm{train}}\) and evaluate it on the same test distribution \(P_{\mathrm{test}}\). 
+This classical notation of generalization requires training a model for each specific task. As many researchers know, GPT-3 and ChatGPT are smarter than that—which is epitomized by the <a href="https://arxiv.org/abs/2005.14165"><strong>in-context learning</strong></a> (ICL).</p>
+
+<p>Here is a simple proposal to study “novelty” of models, which is often called out-of-distribution (OOD) generalization:
+\(\begin{aligned}
+P_{\mathrm{train}} \neq P_{\mathrm{test}}.
+\end{aligned}\)</p>
+
+<h2 id="llms-generalize-on-certain-reasoning-tasks">LLMs generalize on certain reasoning tasks</h2>
+
+<p>Let’s say someone asks you to play a game: given a prompt</p>
+<blockquote>
+  <p>“Then, <em>Henry</em> and <em>Blake</em> had a long argument. Afterwards <em>Henry</em> said to”</p>
+</blockquote>
+
+<p>what is the next probable word? It is easy to guess Blake as the natural continuation. Now what if the prompt is changed a bit?</p>
+<blockquote>
+  <p>“Then, \&amp;\^ and #$ had a long argument. Afterwards \&amp;\^ said to”</p>
+</blockquote>
+
+<p>It may take you some time to realize that I simply replaced the names with special symbols. Once seeing this point, you probably say #$.</p>
+
+<p>Another example of symbolic replacement is a variant of <strong>ICL</strong>:</p>
+<blockquote>
+  <p>baseball is $#, celery is !\%, sheep is \&amp;*, volleyball is $#, lettuce is</p>
+</blockquote>
+
+<p>This prompt asks you to classifying objects into three classes, which are represented by…well…strange symbols. If you follow the replacement logic, then you will probably guess the natural continuation !\%.</p>
+
+<p>While LLMs (especially earlier versions) are unlikely to have seen these strange artificially modified sentences during pretraining, we do see a point in these examples. Training data are mixed with natural languages, math expression, code, and other formatted text such as html. Testing models with perturbed prompts help us understand what models can do and cannot do.</p>
+
+<p>A simple experiment shows how some of the open-source LLMs perform on these two tasks, with and without symbol replacement.</p>
+
+<p style="text-align: center;"><img src="/assets/images/induction-head/table1.png" alt="A first look at OOD generalization" /></p>
+
+<p>So, do LLMs solve novel tasks? I’d say yes, because the models seem to have figured out the “replacement rule” even when they are not explicitly trained on the above specific examples. Instances of the similar nature are observed in the literature, promoting the <a href="https://arxiv.org/abs/2303.12712">“Spark of AGI”</a> argument.</p>
+
+<h2 id="representation-of-concepts-and-linear-representation-hypothesis-lrh">Representation of concepts and linear representation hypothesis (LRH)</h2>
+
+<p>Can we undestand the model’s mechanism a bit better? In the past two years, a lot of interpretability analyses focus on the representation of concepts within a Transformer, most notably the <strong>sparse autoencoder</strong> (SAE) papers, one from <a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/">Anthropic</a> and another from <a href="https://cdn.openai.com/papers/sparse-autoencoders.pdf">OpenAI</a> last year. These papers examine the embeddings (or hidden states) of a prompt, which is a simply a vector in the Euclidean space. My <a href="/_site/jekyll/update/2023/10/28/welcome-to-jekyll.html">previous blog</a> also explores the geometry of embeddings across network layers.</p>
+
+<p>A key observation is the following:</p>
+<blockquote>
+  <p>Concepts are represented as linear subspaces in the embedding space.</p>
+</blockquote>
+
+<p>Let me give you an example of this. Suppose that I have a prompt that contains the word “apple” as the last word. Now if I pass the prompt into an LLM, how does the embedding vector looks like?</p>
+
+<p>Representing a word or a prompt as a linear combination of base concepts is an important intution for explaining the inner workings of LLMs. It is often referred to as the <a href="https://arxiv.org/abs/2311.03658"><strong>linear representation hypothesis</strong></a> (LRH).</p>
+
+\[\begin{aligned}
+\text{apple} = 0.09 \text{dessert} + 0.11 \text{organism} + 0.16 \text{fruit} + 0.22 \text{mobile\&amp;IT} + 0.42 \text{other}
+\end{aligned}\]
+
+<p>This decomposition captures possible scenarios where the word apple appears in a context: which can be a fruit, or a sweet dessert (apple pie!), or of course your favorite iphone. The remaining unexplained component may contain other contextualized information.</p>
+
+<p>If you are familiar with <a href="https://aclanthology.org/N13-1090.pdf">word embedding</a>, similar phenomenon is also observed there: “King” - “Queen” \(\approx\) “Man” - “Woman”. Broadly speaking, this can be viewed as a form of factor models in statistics.</p>
+
+<h2 id="how-is-composition-represented-inside-a-transformer">How is composition represented inside a Transformer?</h2>
+
+<p>LRH helps us to understand the representation of concepts in Transformers. But what about compositions? To find out how compositions are represented, let’s consider a simple <strong>copying task</strong>:</p>
+
+\[\begin{aligned}
+  \ldots [A], [B], [C] \ldots [A], [B] \quad \xrightarrow{\text{next-token prediction}} 
+  \ldots [A], [B], [C]\ldots [A], [B],{[C]}.
+\end{aligned}\]
+
+<p>Here \([A], [B], [C]\) are three words (or tokens) in a prompt where irrelevant words may sit between the patterns. The goal is for the model to copy the repetition pattern.</p>
+
+<p>Tasks of similar nature have been studied in the <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html">induction head</a> literature.</p>
+<blockquote>
+  <p>An induction head is an attention head in a Transformer with certain copying-related behavior.</p>
+</blockquote>
+
+<p>Let me summarize a few interesting phnenomena about induction heads.</p>
+<ul>
+  <li>Induction heads can be used to solve copying, which requires at least two self-attention layers.</li>
+  <li>Once induction heads appear in a Transformer, they can generalize on OOD data</li>
+  <li>Induction heads are important to the emergence of ICL and accompany phase transitions in training dynamics</li>
+</ul>
+
+<p>In our experiment, we trained a two-layer Transformer on synthetic sequences that contain repetition patterns. We evaluated the model on two test data, one with the same distribution as the \(P_{\mathrm{train}}\)(in-distribution or ID) and another on a different distribution where we changed the token distribution and increased the pattern length (OOD). The figure is what we got.</p>
+
+<p style="text-align: center;"><img src="/assets/images/induction-head/main_high_res.png" alt="Phase transition on copying" /></p>
+
+<p>In the training dynamics, the model visibly experiences two phases.</p>
+<ul>
+  <li>Weak learning: the model bases its prediction on the marginal distribution of tokens. It helps in-distribution accuracy a bit, but does not help and OOD accuracy</li>
+  <li>Rule learning: the model figures out the copying rule by forming the induction head, thus achieving low ID/OOD errors.
+We also found that two-layer Transformer, in comparison, did not learn how to solve copying.</li>
+</ul>
+
+<h4 id="subspace-matching">Subspace matching.</h4>
+<p>How do we explain this sudden emergence of induction heads and OOD generalization? (“Why does the model suddenly get smarter?”) We’ve taken many other measurements when training the Transformer. Roughly speaking, our findings can be described as follows.</p>
+
+<blockquote>
+  <p>The first self-attention layer outputs intermediate vectors in a subspace, and the second self-attention layer reads vectors from in another subspace. The two subspaces <strong>becomes suddenly aligned</strong> at the transition.</p>
+</blockquote>
+
+<p>This provides an explanation for how compositional structures are formed within a model.</p>
+
+<h2 id="from-lrh-to-common-bridge-subspace-hypothesis">From LRH to Common Bridge Subspace Hypothesis</h2>
+
+<p>This simple experiment motivates us to generalize LRH to representation of compositions.</p>
+
+<blockquote>
+  <p>For compositional tasks, a latent subspace stores intermediate representations from the outputs of relevant attention heads and then matches later heads.</p>
+</blockquote>
+
+<p style="text-align: center;"><img src="/assets/images/induction-head/CBR-2.png" alt="Illustration of Common Bridge Subspace Hypothesis" width="900" /></p>
+
+<p>To be more clear, each self-attention layer has a weight matrix \(W_{\mathrm{OV}}\) responsible for “writing” the information, and a weight matrix \(W_{\mathrm{QK}}\) responsible for “reading” the information. This is in fact the <a href="https://transformer-circuits.pub/2021/framework/index.html">intuition</a> behind many mechanistic interpretability papers. If you are familiar with how Transformers work, then the following formula may help you understand the <strong>circuits</strong> perspective.</p>
+
+<p style="text-align: center;"><img src="/assets/images/induction-head/transformers-circuits.png" alt="Circuits view of a Transformer" width="500" /></p>
+
+<p>Mathematically, the <strong>common bridge subspace hypothesis</strong> can be stated as</p>
+
+\[\begin{equation}
+V = \mathrm{span}(W_{\mathrm{OV}}) = \mathrm{span}(W_{\mathrm{QK}})
+\end{equation}\]
+
+<p>for selected OV and QK weight matrices. The subspace \(V\) can be viewed a “bridge subspace” that connects two layers in order to represent compositions.</p>
+
+<p>We’ve tested this hypothesis with projection-based ablation studies on many LLMs, and it appears to hold broadly. If you are thoughts on this hypothesis, dropping me a message is extremely welcome!</p>
+
+<h2 id="induction-heads-are-critical-components-across-llms-and-tasks">Induction heads are critical components across LLMs and tasks</h2>
+
+<p>A lot of our analyses center on induction heads, because they are so pervasive and important! They help us gain a lot of understanding about composition, OOD generalization, and geometric insights such as the common bridge subspace hypothesis.</p>
+
+<p>We’ve confirmed prior findings about induction heads on a variety of LLMs (10+ models, ranging from 36M–40B) on several tasks:</p>
+<ul>
+  <li>Fuzzy copying</li>
+  <li>Indirect object identification</li>
+  <li>In-context learning</li>
+  <li>Math reasoning with chain-of-thought on GSM8K</li>
+</ul>
+
+<p>We’ve conducted ablation experiments where we removed induction heads from the model one by one and then measured the accuracy. Below are some representative plots.</p>
+
+<p style="text-align: center;"><img src="/assets/images/induction-head/summary-example-no-cot.png" alt="Induction heads are crucial for OOD generalization" /></p>
+
+<p>So removal of induction heads leads to a significant drop of accuracy on symbolic prompts (recall the first figure), but not on the normal prompts. This result paints a likely picture about how LLMs solve language tasks.</p>
+
+<blockquote>
+  <p>LLMs rely on memorized facts for ID prompts, and use combined abilities
+(both memorized facts and IHs) to solve OOD prompts.</p>
+</blockquote>
+
+<h2 id="final-thoughts">Final thoughts</h2>
+
+<p>Our study is far from complete, but I am excited that many interesting phenomena have emerged. It is worth thinking about a number of questions.</p>
+
+<ol>
+  <li>Interpreting feature representations with better decomposition.
+SAEs have been successful in explaining what models “believe” at a given layer. However, many questions remain unclear to me, such as
+    <ul>
+      <li>how concepts are composed across layers,</li>
+      <li>how models solve complicated reasoning tasks, and</li>
+      <li>how the rules are represented by models
+  Perhaps we can identify more structures that do not represent base concepts but are functionally important. The observation of bridge subspaces may be useful.</li>
+    </ul>
+  </li>
+</ol>
+
+<p style="text-align: center;"><img src="/assets/images/induction-head/takeaway-2.png" alt="Representations of concepts vs. rules" width="400" /></p>
+
+<ol>
+  <li>Memorization and generalization.
+  It is still not clear to me how models pick up and memorize concepts, and use some of the memorized concepts selectively in a context. Especially for reasoning models such as OpenAI’s o1 and DeepSeek-R1. It’s definitely more costly if I am going to run complicated reasoning experiments. Hopefully I can get some help this year :-)</li>
+</ol>]]></content><author><name></name></author><category term="jekyll" /><category term="update" /><summary type="html"><![CDATA[This post is based on my recent paper published in PNAS. If you can’t get past the paywall, here is a arXiv version. Big thanks to my collaborator Jiajun Song and Zhuoyan Xu!]]></summary></entry><entry><title type="html">Hidden Geometry of Large Language Models</title><link href="http://localhost:4000/jekyll/update/2023/10/28/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Hidden Geometry of Large Language Models" /><published>2023-10-28T22:00:00-05:00</published><updated>2023-10-28T22:00:00-05:00</updated><id>http://localhost:4000/jekyll/update/2023/10/28/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2023/10/28/welcome-to-jekyll.html"><![CDATA[<p>This post is based on a <a href="https://arxiv.org/abs/2310.04861">paper</a> with <a href="https://github.com/JiajunSong629">Jiajun Song</a>.</p>
 
 <h2 id="can-we-trust-large-language-models">Can we trust Large Language Models?</h2>
 <p>If you are reading this blog, most probably you know what <a href="https://openai.com/chatgpt">ChatGPT</a> is. “<em>How fascinating!</em>” You may exclaim. Yes, it is indeed magical to interact with a chatbot that seemingly understand our languages. The more we play with ChatGPT, the more surprises we have: it is super knowledgeable, good at drafting emails, polishing essays, writing codes, and so on!</p>
