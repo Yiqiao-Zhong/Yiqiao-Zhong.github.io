@@ -65,7 +65,7 @@ This classical notation of generalization requires training a model for each spe
 P_{\mathrm{train}} \neq P_{\mathrm{test}}.
 \end{aligned}\)</p>
 
-<h2 id="llms-generalize-on-certain-reasoning-tasks">LLMs generalize on certain reasoning tasks</h2>
+<h2 id="llms-generalize-ood-on-certain-reasoning-tasks">LLMs generalize OOD on certain reasoning tasks</h2>
 
 <p>Let’s say someone asks you to play a game: given a prompt</p>
 <blockquote>
@@ -96,28 +96,29 @@ P_{\mathrm{train}} \neq P_{\mathrm{test}}.
 
 <h2 id="representation-of-concepts-and-linear-representation-hypothesis-lrh">Representation of concepts and linear representation hypothesis (LRH)</h2>
 
-<p>Can we undestand the model’s mechanism a bit better? In the past two years, a lot of interpretability analyses focus on the representation of concepts within a Transformer, most notably the <strong>sparse autoencoder</strong> (SAE) papers, one from <a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/">Anthropic</a> and another from <a href="https://cdn.openai.com/papers/sparse-autoencoders.pdf">OpenAI</a> last year. These papers examine the embeddings (or hidden states) of a prompt, which is a simply a vector in the Euclidean space. My <a href="/_site/jekyll/update/2023/10/28/welcome-to-jekyll.html">previous blog</a> also explores the geometry of embeddings across network layers.</p>
+<p>Can we undestand the model’s mechanism a bit better? In the past two years, a lot of interpretability analyses focus on the representation of concepts within a Transformer, most notably the <strong>sparse autoencoder</strong> (SAE) papers, one from <a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/">Anthropic</a> and another from <a href="https://cdn.openai.com/papers/sparse-autoencoders.pdf">OpenAI</a> last year. These papers examine the embeddings (or hidden states) of a prompt, which is a simply a vector in the Euclidean space. 
+My <a href="https://yiqiao-zhong.github.io/jekyll/update/2023/10/28/welcome-to-jekyll.html">previous blog</a> also explores the geometry of embeddings across network layers.</p>
 
 <p>A key observation is the following:</p>
 <blockquote>
   <p>Concepts are represented as linear subspaces in the embedding space.</p>
 </blockquote>
 
-<p>Let me give you an example of this. Suppose that I have a prompt that contains the word “apple” as the last word. Now if I pass the prompt into an LLM, how does the embedding vector looks like?</p>
+<p>Let me give you a concrete example. Suppose that I have a prompt that contains the word “apple” as the last word. Now if I pass the prompt into an LLM, how does the embedding vector looks like?</p>
 
 <p>Representing a word or a prompt as a linear combination of base concepts is an important intution for explaining the inner workings of LLMs. It is often referred to as the <a href="https://arxiv.org/abs/2311.03658"><strong>linear representation hypothesis</strong></a> (LRH).</p>
 
 \[\begin{aligned}
-\text{apple} = 0.09 \text{dessert} + 0.11 \text{organism} + 0.16 \text{fruit} + 0.22 \text{mobile\&amp;IT} + 0.42 \text{other}
+\text{apple} = 0.09 \times \text{dessert} + 0.11 \times \text{organism} + 0.16 \times \text{fruit} + 0.22  \text{mobile\&amp;IT} + 0.42 \times \text{other}
 \end{aligned}\]
 
-<p>This decomposition captures possible scenarios where the word apple appears in a context: which can be a fruit, or a sweet dessert (apple pie!), or of course your favorite iphone. The remaining unexplained component may contain other contextualized information.</p>
+<p>This decomposition captures possible scenarios where the word apple appears in a context: it sometimes mean a fruit, or a sweet dessert (apple pie!), or of course your favorite iphone. The remaining unexplained component may contain other contextualized information.</p>
 
 <p>If you are familiar with <a href="https://aclanthology.org/N13-1090.pdf">word embedding</a>, similar phenomenon is also observed there: “King” - “Queen” \(\approx\) “Man” - “Woman”. Broadly speaking, this can be viewed as a form of factor models in statistics.</p>
 
 <h2 id="how-is-composition-represented-inside-a-transformer">How is composition represented inside a Transformer?</h2>
 
-<p>LRH helps us to understand the representation of concepts in Transformers. But what about compositions? To find out how compositions are represented, let’s consider a simple <strong>copying task</strong>:</p>
+<p>The LRH helps us to understand the representation of concepts in Transformers. But what about compositions? To find out how compositions are represented, let’s consider a simple <strong>copying task</strong>:</p>
 
 \[\begin{aligned}
   \ldots [A], [B], [C] \ldots [A], [B] \quad \xrightarrow{\text{next-token prediction}} 
@@ -134,22 +135,23 @@ P_{\mathrm{train}} \neq P_{\mathrm{test}}.
 <p>Let me summarize a few interesting phnenomena about induction heads.</p>
 <ul>
   <li>Induction heads can be used to solve copying, which requires at least two self-attention layers.</li>
-  <li>Once induction heads appear in a Transformer, they can generalize on OOD data</li>
-  <li>Induction heads are important to the emergence of ICL and accompany phase transitions in training dynamics</li>
+  <li>Once induction heads appear in a Transformer, they can generalize on OOD data.</li>
+  <li>Induction heads are important to the emergence of ICL and accompany phase transitions in training dynamics.</li>
 </ul>
 
-<p>In our experiment, we trained a two-layer Transformer on synthetic sequences that contain repetition patterns. We evaluated the model on two test data, one with the same distribution as the \(P_{\mathrm{train}}\)(in-distribution or ID) and another on a different distribution where we changed the token distribution and increased the pattern length (OOD). The figure is what we got.</p>
+<p>In our experiment, we trained a two-layer Transformer on synthetic sequences that contain repetition patterns. We evaluated the model on two test data, one with the same distribution as the \(P_{\mathrm{train}}\)(in-distribution or ID) and another on a different distribution where we changed the token distribution and increased the pattern length (OOD). 
+The following figure is what we got.</p>
 
 <p style="text-align: center;"><img src="/assets/images/induction-head/main_high_res.png" alt="Phase transition on copying" /></p>
 
 <p>In the training dynamics, the model visibly experiences two phases.</p>
 <ul>
-  <li>Weak learning: the model bases its prediction on the marginal distribution of tokens. It helps in-distribution accuracy a bit, but does not help and OOD accuracy</li>
+  <li>Weak learning: the model bases its prediction on the marginal distribution of tokens. It helps in-distribution accuracy a bit, but does not help and OOD accuracy.</li>
   <li>Rule learning: the model figures out the copying rule by forming the induction head, thus achieving low ID/OOD errors.
 We also found that two-layer Transformer, in comparison, did not learn how to solve copying.</li>
 </ul>
 
-<h4 id="subspace-matching">Subspace matching.</h4>
+<h4 id="subspace-matching">Subspace matching</h4>
 <p>How do we explain this sudden emergence of induction heads and OOD generalization? (“Why does the model suddenly get smarter?”) We’ve taken many other measurements when training the Transformer. Roughly speaking, our findings can be described as follows.</p>
 
 <blockquote>
