@@ -92,7 +92,7 @@ P_{\mathrm{train}} \neq P_{\mathrm{test}}.
 
 <p style="text-align: center;"><img src="/assets/images/induction-head/table1.png" alt="A first look at OOD generalization" /></p>
 
-<p>So, do LLMs solve novel tasks? I’d say yes, because the models seem to have figured out the “replacement rule” even when they are not explicitly trained on the above specific examples. Instances of the similar nature are observed in the literature, promoting the <a href="https://arxiv.org/abs/2303.12712">“Spark of AGI”</a> argument.</p>
+<p>So, do LLMs solve novel tasks? I’d say yes, because the models seem to have figured out (not perfectly but definitely better than random guess) the “replacement rule” even when they are not explicitly trained on the above specific examples. Instances of the similar nature are observed in the literature, promoting the <a href="https://arxiv.org/abs/2303.12712">“Spark of AGI”</a> argument.</p>
 
 <h2 id="representation-of-concepts-and-linear-representation-hypothesis-lrh">Representation of concepts and linear representation hypothesis (LRH)</h2>
 
@@ -209,24 +209,21 @@ V = \mathrm{span}(W_{\mathrm{OV}}) = \mathrm{span}(W_{\mathrm{QK}})
 
 <p>Our study is far from complete, but I am excited that many interesting phenomena have emerged. It is worth thinking about a number of questions.</p>
 
-<ol>
+<ul>
   <li>Interpreting feature representations with better decomposition.
-SAEs have been successful in explaining what models “believe” at a given layer. However, many questions remain unclear to me, such as
+ SAEs have been successful in explaining what models “believe” at a given layer. However, many questions remain unclear to me, such as
     <ul>
       <li>how concepts are composed across layers,</li>
       <li>how models solve complicated reasoning tasks, and</li>
       <li>how the rules are represented by models
-  Perhaps we can identify more structures that do not represent base concepts but are functionally important. The observation of bridge subspaces may be useful.</li>
+Perhaps we can identify more structures that do not represent base concepts but are functionally important. The observation of bridge subspaces may be useful.</li>
     </ul>
+
+    <p style="text-align: center;"><img src="/assets/images/induction-head/takeaway-2.png" alt="Representations of concepts vs. rules" width="400" /></p>
   </li>
-</ol>
-
-<p style="text-align: center;"><img src="/assets/images/induction-head/takeaway-2.png" alt="Representations of concepts vs. rules" width="400" /></p>
-
-<ol>
   <li>Memorization and generalization.
-  It is still not clear to me how models pick up and memorize concepts, and use some of the memorized concepts selectively in a context. Especially for reasoning models such as OpenAI’s o1 and DeepSeek-R1. It’s definitely more costly if I am going to run complicated reasoning experiments. Hopefully I can get some help this year :-)</li>
-</ol>
+It is still not clear to me how models pick up and memorize concepts, and use some of the memorized concepts selectively in a context. Especially for reasoning models such as OpenAI’s o1 and DeepSeek-R1. It’s definitely more costly if I am going to run complicated reasoning experiments. Hopefully I can get some help this year :-)</li>
+</ul>
 
 
   </div><a class="u-url" href="/jekyll/update/2025/02/18/induction-heads.html" hidden></a>
