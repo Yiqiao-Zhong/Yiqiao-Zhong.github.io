@@ -1,4 +1,129 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-02-21T01:15:58-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Advancing Interpretability of Deep Learning</title><subtitle>Can we understand the inner workings of black-box models? The goal of the blogs is to explore structures and analyze empirical phenoemna by scientific experiments on deep learning. </subtitle><entry><title type="html">Can LLMs solve novel tasks? Induction heads, composition, and out-of-distribution generalization</title><link href="http://localhost:4000/jekyll/update/2025/02/18/induction-heads.html" rel="alternate" type="text/html" title="Can LLMs solve novel tasks? Induction heads, composition, and out-of-distribution generalization" /><published>2025-02-18T21:00:00-06:00</published><updated>2025-02-18T21:00:00-06:00</updated><id>http://localhost:4000/jekyll/update/2025/02/18/induction-heads</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2025/02/18/induction-heads.html"><![CDATA[<p>This post is based on my recent <a href="https://www.pnas.org/doi/10.1073/pnas.2417182122">paper</a> published in PNAS. If you can’t get past the paywall, here is a <a href="https://arxiv.org/abs/2408.09503">arXiv version</a>.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-04-01T00:27:19-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Advancing Interpretability of Deep Learning</title><subtitle>Can we understand the inner workings of black-box models? The goal of the blogs is to explore structures and analyze empirical phenoemna by scientific experiments on deep learning. </subtitle><entry><title type="html">Imbalance troubles: Why is the minority class hurt more by overfitting?</title><link href="http://localhost:4000/jekyll/update/2025/03/31/imbalanced-classification.html" rel="alternate" type="text/html" title="Imbalance troubles: Why is the minority class hurt more by overfitting?" /><published>2025-03-31T22:00:00-05:00</published><updated>2025-03-31T22:00:00-05:00</updated><id>http://localhost:4000/jekyll/update/2025/03/31/imbalanced-classification</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2025/03/31/imbalanced-classification.html"><![CDATA[<p>This post is based on a recent <a href="https://arxiv.org/abs/2502.11323">paper</a>.</p>
+
+<h2 id="prelude-overfitting-in-neural-networks">Prelude: Overfitting in neural networks</h2>
+
+<p>Deep neural networks such as ResNets and Transformers are standard recipes for classification. 
+They are powerful feature extractors that learn feature representations of data as vectors in high dimensions. They have a tendancy to fit data well—often achieving 100% train accuracy.
+In fact, a well-known <a href="https://arxiv.org/abs/1611.03530">paper</a> shows that popular CNN models can be easily trained to fit corrupted labels (a fraction of labels are arbitrarily permuted).
+This paper was a bit shocking because of a deep-rooted belief in statistics: a model can’t memorize and generalize well at the same time (<a href="https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff">Bias-variance tradeoff</a>).</p>
+
+<p>Since then, a lot of research activities have focused on understanding why neural networks generalize well on test data despite perfect fits. 
+The notion of <a href="https://www.pnas.org/doi/10.1073/pnas.1907378117"><strong>benign overfitting</strong></a> and subsequent research seem to have largely resolved the puzzle.
+The key idea is that when the model has a large number of parameters (thus achieving the perfect train accuracy), then there is an implicit regularization effect that encourages the model to be parsimonious.
+In the simple case of linear classification, when training data is linearly separable, then <a href="https://jmlr.org/papers/v19/18-188.html"><strong>max-margin classifier</strong></a> is the “preferred” classifier.</p>
+
+<h2 id="overfitting-headache-in-imbalanced-classification">Overfitting headache in imbalanced classification</h2>
+
+<p class="image-caption"><img src="/assets/images/imbalanced-classification/imbalance-intro.png" alt="A common pipeline for classification tasks" /></p>
+
+<p>Many datasets are highly imbalanced, which means that there are minority classes whose training samples are much fewer than the other classes (majority classes).
+Data imbalance is especially common in downstream analysis. For example, 
+doctors want to classify medical images by leveraging existing models; but images with diseases (say cancer) are often scarce.</p>
+
+<p>A common practice is to take a pretrained neural network (for example, ResNets or vision Transformers) and use it as a feature extractor. 
+For each image, we will have a feature vector \(\boldsymbol{x}_i\) using the neural network. 
+If we have labels \(y_i\) (\(i=1,2,\ldots,n\)) for the images on a downstream task, then we can simply train a linear classifier such as logistic regression or support vector machine (SVM) using the dataset \((\boldsymbol{x}_i, y_i)\).
+(A more sophisticated approach is to finetune the last few layers of the nerual net, but we won’t discuss this here.)</p>
+
+<p>Suppose that we only have two classes (\(y_i \in \{\pm 1\}\)) and the training data is linear separable, namely, 
+there exists a vector \(\boldsymbol{\beta}\) such that \(\boldsymbol{\beta}^\top x_i &gt; 0\) if and only if \(y_i=1\). 
+The <a href="https://jmlr.org/papers/v19/18-188.html">inductive bias</a> of gradient descent algorithms is known to promote the max-margin classifier, which can be obtained by including a tiny \(\ell_2\) regularization or running the gradient descent for sufficiently long time.
+After fitting a max-margin classifier, we obtain the coefficients \((\boldsymbol{\beta}, \beta_0)\) where \(\beta_0\) is the intercept term.</p>
+
+<p><img src="/assets/images/imbalanced-classification/ELD.png" alt="Logit distribution on train dataset (histogram) vs. test dataset (dashed curve)" /></p>
+
+<p>The <strong>logit</strong> usually refers to the real-valued scalar before we apply Softmax to get prediction probabilities.
+In our case, for a feature \(\boldsymbol{x}\), the logit is \(\boldsymbol{\beta}^\top \boldsymbol{x} + \beta_0\). 
+In the figure above, we generated features from a mixture of two Gaussians, and fit a max-margin classifier.
+Then we plotted the distribution of logits on the training dataset as histograms which are fitted by solid curves, 
+and the distribution of logits on the test dataset fitted by dashed curves. Two colors indicate the two classes. 
+We’ve also found similar results across <strong>various data modalities</strong>, including tabular data, image data, and text data.</p>
+
+<p>What do we discover? The logit distributions are clearly different on train vs. test datasets. More concretely,</p>
+
+<ul>
+  <li>The logit distributions on the training dataset look like <strong>truncated Gaussian</strong> distributions;</li>
+  <li>The minority logit distribution (right cluster, histogram rescaled for better visibility) is “eaten” more by the truncation, thus having worse accuracy.</li>
+</ul>
+
+<p>Hmmm, why is there a bigger discrepancy for the minority class in terms of logit distributions between the training dataset vs. the test dataset?
+A branch of statistical theory, <em>high-dimensional statistics</em>, offers perfect tools for understanding such phenomenon.</p>
+
+<h2 id="a-tour-of-recent-statistical-theory-trouble-of-high-dimensionality">A tour of recent statistical theory: trouble of high dimensionality</h2>
+
+<p>In statistics, a classifier obtained from a training dataset is viewed as inherently random, because the training examples are random samples from the universe of all possible examples (known as population);
+Think about drawing a different training dataset, then the classifier should also be different. 
+But fortunately, for linear classifiers, classical statistical theory tells us that the variability is small if the feature dimension \(d\) is much smaller than the sample size \(n\).
+For our previous experiment, we would expect small when \(d \ll n\).</p>
+
+<ul>
+  <li>Consistency: \(\boldsymbol{\beta}\) is close to the “true” coefficient vector \(\boldsymbol{\beta}\) if we had infinite training samples.</li>
+  <li>Normal distribution: the logit distribution is a projection of multivariate features into 1D, which is univariate Gaussian (recall that linear projection of multivariate Gaussian is still <a href="https://en.wikipedia.org/wiki/Multivariate_normal_distribution#Affine_transformation">Gaussian</a>).</li>
+</ul>
+
+<p>However, this classical picture falls apart if \(d\) and \(n\) are comparable. When the dimension is getting large, there is too much flexibility (known as degree of freedom) for a classifier to fit the training data, 
+so it gets more “uncertain”. Roughly speaking, this is the source of overfitting when the dimension is too large or the model has a higher fitting capability.</p>
+
+<p>It turns out that there is a <strong>phase transition</strong> phenomenon: there exists a critical threshold for \(d/n\), 
+above which the training data is linearly separable, and the <a href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation">maximum likelihood estimation</a> (MLE) is not well defined.
+See <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-48/issue-1/The-phase-transition-for-the-existence-of-the-maximum-likelihood/10.1214/18-AOS1789.full">this paper</a> for example.</p>
+
+<p>To understand intuitively why dimensionality matters for classification problems, consider a simple case where \(n=d\) and each feature is one of the canonical basis, 
+that is, the \(i\)-th coordinate of \(\boldsymbol{x}_i\) is 1 and other coordinates are 0. Then for any positive scaler \(c\), 
+the coefficient vector \(\sum_{i=1}^n \big[ c \mathbf{1}\{y_i=1\} - \mathbf{1}\{y_i=-1\} \big] \boldsymbol{x}_i\) perfectly separates the two classes, no matter what labels \(y_i\) are.
+This simple case is actually not that artificial, 
+as \(n\) points in general position in a \(d\)-dimensional space with \(d \ge n\) can be mapped to the canonical basis by an affine transformation.</p>
+
+<h2 id="rethinking-overfitting-through-logit-distribution">Rethinking overfitting through logit distribution</h2>
+
+<p>All is not lost when we are in very high dimensions. 
+As we saw earlier, the max-margin linear classifier—which is unique and has often generalizes well—is the “preferred” classifier thanks to implicit regularization. 
+But overfitting does create an issue for the minority class.</p>
+
+<p>Our theory finds that the distortion (truncation) of logit distributions <em>completely explains</em> overfitting. The following heuristic explanations are derived from our theory.</p>
+
+<ol>
+  <li>High dimensionality allows arbitrary distortion of logit distributions up to a certain limit (measured by mean squared distance);</li>
+  <li>Since the minority class weights less and counts less toward the limit, its logit distribution is more severely distorted in order to maximize the margin;</li>
+  <li>Large distortion of the minority logit distribution leads to worse test accuracy, despite perfect train accuracy.</li>
+</ol>
+
+<p>Some of the intuitions (especially the first point) and technical tools already appear in prior work such as <a href="https://arxiv.org/abs/2206.06526">this paper</a> on projection pursuit.</p>
+
+<h2 id="consequence-and-margin-rebalancing">Consequence and margin rebalancing</h2>
+
+<p>Our analysis reveals that data imbalance not only exacerbates test accuray for the minority class, but increases errors for <a href="https://arxiv.org/pdf/1706.04599">calibration</a> as well.
+The general trend we’ve found can be summarized by the following.</p>
+<blockquote>
+  <p>The degree of data imbalance plays a similar role as noise-to-signal ratio in test accuracy and calibration.</p>
+</blockquote>
+
+<p>What can we do to counter overfitting for the minority class? 
+In many applications such as medical image classification, we want the minority class to be correctly classified as much as the majority class.
+We studied a common strategy where margins are rebalaced based on the sample sizes of both classes.</p>
+
+<p><img src="/assets/images/imbalanced-classification/SVM-cartoon1.png" alt="Margin rebalacing shifts the decision boundary and improves minority accuracy" /></p>
+
+<p>In some situations, we discovered that margins rebalacing is indispensable: 
+the balanced test error is as worse as a random guess without margin rebalancing, but is close to zero with appropriate margin rebalancing.</p>
+
+<h2 id="epilogue-why-it-matters">Epilogue: why it matters</h2>
+
+<p>Okay, you might say, it is an interesting phenomenon but how it is relevant to machine learning practice? 
+I don’t have a conclusive answer. Arguably our current analysis of linear classifiers is a bit simpler—
+but it is potentially connected to a wide range of practice in deep learning (feedback is welcome!).</p>
+
+<ul>
+  <li>Pretraining: margin-aware adjustment in the loss function design</li>
+  <li>Finetuning: distribution shifts and bias correction</li>
+  <li>Interpretability: linear probing of features or network activations</li>
+</ul>
+
+<p>Let me give some concrete examples. In computer vision, <a href="https://papers.nips.cc/paper_files/paper/2019/hash/621461af90cadfdaf0e8d4cc25129f91-Abstract.html">researchers</a> have used similar intutions to rebalance margins in designing loss functions for pretraining.
+When adapting and interpreting language models, <a href="https://arxiv.org/abs/2306.03341">linear probing</a> is widely used to distinguish desired features and harmful features.</p>
+
+<p>It is quite conceivable that linear classifiers are building blocks of existing or future AI systems, as models need to represent concepts as clusters in the feature space.
+For improving AI safety, we’d better understand how bias is generated from training. Analyzing linear classifiers is probably just a starting point!</p>]]></content><author><name></name></author><category term="jekyll" /><category term="update" /><summary type="html"><![CDATA[This post is based on a recent paper.]]></summary></entry><entry><title type="html">Can LLMs solve novel tasks? Induction heads, composition, and out-of-distribution generalization</title><link href="http://localhost:4000/jekyll/update/2025/02/18/induction-heads.html" rel="alternate" type="text/html" title="Can LLMs solve novel tasks? Induction heads, composition, and out-of-distribution generalization" /><published>2025-02-18T21:00:00-06:00</published><updated>2025-02-18T21:00:00-06:00</updated><id>http://localhost:4000/jekyll/update/2025/02/18/induction-heads</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2025/02/18/induction-heads.html"><![CDATA[<p>This post is based on my recent <a href="https://www.pnas.org/doi/10.1073/pnas.2417182122">paper</a> published in PNAS. If you can’t get past the paywall, here is a <a href="https://arxiv.org/abs/2408.09503">arXiv version</a>.
 Big thanks to my collaborator <a href="https://github.com/JiajunSong629">Jiajun Song</a> and <a href="https://pages.cs.wisc.edu/~zxu444/home/">Zhuoyan Xu</a>!</p>
 
 <h2 id="can-llms-solve-novelty-tasks-the-agi-debate">Can LLMs solve novelty tasks? The AGI debate</h2>
