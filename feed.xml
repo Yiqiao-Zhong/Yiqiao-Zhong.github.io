@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-04-01T00:27:19-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Advancing Interpretability of Deep Learning</title><subtitle>Can we understand the inner workings of black-box models? The goal of the blogs is to explore structures and analyze empirical phenoemna by scientific experiments on deep learning. </subtitle><entry><title type="html">Imbalance troubles: Why is the minority class hurt more by overfitting?</title><link href="http://localhost:4000/jekyll/update/2025/03/31/imbalanced-classification.html" rel="alternate" type="text/html" title="Imbalance troubles: Why is the minority class hurt more by overfitting?" /><published>2025-03-31T22:00:00-05:00</published><updated>2025-03-31T22:00:00-05:00</updated><id>http://localhost:4000/jekyll/update/2025/03/31/imbalanced-classification</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2025/03/31/imbalanced-classification.html"><![CDATA[<p>This post is based on a recent <a href="https://arxiv.org/abs/2502.11323">paper</a>.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-04-02T23:17:19-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Advancing Interpretability of Deep Learning</title><subtitle>Can we understand the inner workings of black-box models? The goal of the blogs is to explore structures and analyze empirical phenoemna by scientific experiments on deep learning. </subtitle><entry><title type="html">Imbalance troubles: Why is the minority class hurt more by overfitting?</title><link href="http://localhost:4000/jekyll/update/2025/03/31/imbalanced-classification.html" rel="alternate" type="text/html" title="Imbalance troubles: Why is the minority class hurt more by overfitting?" /><published>2025-03-31T22:00:00-05:00</published><updated>2025-03-31T22:00:00-05:00</updated><id>http://localhost:4000/jekyll/update/2025/03/31/imbalanced-classification</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2025/03/31/imbalanced-classification.html"><![CDATA[<p>This post is based on a recent <a href="https://arxiv.org/abs/2502.11323">paper</a>.</p>
 
 <h2 id="prelude-overfitting-in-neural-networks">Prelude: Overfitting in neural networks</h2>
 
@@ -27,7 +27,7 @@ If we have labels \(y_i\) (\(i=1,2,\ldots,n\)) for the images on a downstream ta
 
 <p>Suppose that we only have two classes (\(y_i \in \{\pm 1\}\)) and the training data is linear separable, namely, 
 there exists a vector \(\boldsymbol{\beta}\) such that \(\boldsymbol{\beta}^\top x_i &gt; 0\) if and only if \(y_i=1\). 
-The <a href="https://jmlr.org/papers/v19/18-188.html">inductive bias</a> of gradient descent algorithms is known to promote the max-margin classifier, which can be obtained by including a tiny \(\ell_2\) regularization or running the gradient descent for sufficiently long time.
+The <a href="https://jmlr.org/papers/v19/18-188.html">implicit bias</a> of gradient descent algorithms is known to promote the max-margin classifier, which can be obtained by including a tiny \(\ell_2\) regularization or running the gradient descent for sufficiently long time.
 After fitting a max-margin classifier, we obtain the coefficients \((\boldsymbol{\beta}, \beta_0)\) where \(\beta_0\) is the intercept term.</p>
 
 <p><img src="/assets/images/imbalanced-classification/ELD.png" alt="Logit distribution on train dataset (histogram) vs. test dataset (dashed curve)" /></p>
@@ -83,7 +83,7 @@ But overfitting does create an issue for the minority class.</p>
 <p>Our theory finds that the distortion (truncation) of logit distributions <em>completely explains</em> overfitting. The following heuristic explanations are derived from our theory.</p>
 
 <ol>
-  <li>High dimensionality allows arbitrary distortion of logit distributions up to a certain limit (measured by mean squared distance);</li>
+  <li>High dimensionality allows arbitrary distortion of logit distributions up to a certain limit (measured by the Wasserstein distance);</li>
   <li>Since the minority class weights less and counts less toward the limit, its logit distribution is more severely distorted in order to maximize the margin;</li>
   <li>Large distortion of the minority logit distribution leads to worse test accuracy, despite perfect train accuracy.</li>
 </ol>
@@ -95,16 +95,16 @@ But overfitting does create an issue for the minority class.</p>
 <p>Our analysis reveals that data imbalance not only exacerbates test accuray for the minority class, but increases errors for <a href="https://arxiv.org/pdf/1706.04599">calibration</a> as well.
 The general trend we’ve found can be summarized by the following.</p>
 <blockquote>
-  <p>The degree of data imbalance plays a similar role as noise-to-signal ratio in test accuracy and calibration.</p>
+  <p>In terms of impact on test accuracy and calibration, degree of data imbalance \(\approx\) noise level.</p>
 </blockquote>
 
 <p>What can we do to counter overfitting for the minority class? 
 In many applications such as medical image classification, we want the minority class to be correctly classified as much as the majority class.
-We studied a common strategy where margins are rebalaced based on the sample sizes of both classes.</p>
+We studied a common strategy where margins are rebalanced based on the sample sizes of both classes.</p>
 
-<p><img src="/assets/images/imbalanced-classification/SVM-cartoon1.png" alt="Margin rebalacing shifts the decision boundary and improves minority accuracy" /></p>
+<p><img src="/assets/images/imbalanced-classification/SVM-cartoon1.png" alt="Margin rebalancing shifts the decision boundary and improves minority accuracy" /></p>
 
-<p>In some situations, we discovered that margins rebalacing is indispensable: 
+<p>In some situations, we discovered that margins rebalancing is indispensable: 
 the balanced test error is as worse as a random guess without margin rebalancing, but is close to zero with appropriate margin rebalancing.</p>
 
 <h2 id="epilogue-why-it-matters">Epilogue: why it matters</h2>
@@ -115,11 +115,11 @@ but it is potentially connected to a wide range of practice in deep learning (fe
 
 <ul>
   <li>Pretraining: margin-aware adjustment in the loss function design</li>
-  <li>Finetuning: distribution shifts and bias correction</li>
+  <li>Fine-tuning: distribution shifts and bias correction</li>
   <li>Interpretability: linear probing of features or network activations</li>
 </ul>
 
-<p>Let me give some concrete examples. In computer vision, <a href="https://papers.nips.cc/paper_files/paper/2019/hash/621461af90cadfdaf0e8d4cc25129f91-Abstract.html">researchers</a> have used similar intutions to rebalance margins in designing loss functions for pretraining.
+<p>Let me give some concrete examples. In computer vision, <a href="https://papers.nips.cc/paper_files/paper/2019/hash/621461af90cadfdaf0e8d4cc25129f91-Abstract.html">researchers</a> have used similar intuitions to rebalance margins in designing loss functions for pretraining.
 When adapting and interpreting language models, <a href="https://arxiv.org/abs/2306.03341">linear probing</a> is widely used to distinguish desired features and harmful features.</p>
 
 <p>It is quite conceivable that linear classifiers are building blocks of existing or future AI systems, as models need to represent concepts as clusters in the feature space.
