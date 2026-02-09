@@ -4,20 +4,20 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Can LLMs solve novel tasks? Induction heads, composition, and out-of-distribution generalization | Advancing Interpretability of Deep Learning</title>
-<meta name="generator" content="Jekyll v4.3.2" />
+<meta name="generator" content="Jekyll v4.3.4" />
 <meta property="og:title" content="Can LLMs solve novel tasks? Induction heads, composition, and out-of-distribution generalization" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="This post is based on my recent paper published in PNAS. If you can’t get past the paywall, here is a arXiv version. Big thanks to my collaborator Jiajun Song and Zhuoyan Xu!" />
 <meta property="og:description" content="This post is based on my recent paper published in PNAS. If you can’t get past the paywall, here is a arXiv version. Big thanks to my collaborator Jiajun Song and Zhuoyan Xu!" />
-<link rel="canonical" href="http://localhost:4000/jekyll/update/2025/02/19/induction-heads.html" />
-<meta property="og:url" content="http://localhost:4000/jekyll/update/2025/02/19/induction-heads.html" />
+<link rel="canonical" href="http://localhost:4000/jekyll/update/2025/02/18/induction-heads.html" />
+<meta property="og:url" content="http://localhost:4000/jekyll/update/2025/02/18/induction-heads.html" />
 <meta property="og:site_name" content="Advancing Interpretability of Deep Learning" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2025-02-19T11:00:00+08:00" />
+<meta property="article:published_time" content="2025-02-18T21:00:00-06:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Can LLMs solve novel tasks? Induction heads, composition, and out-of-distribution generalization" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-02-19T11:00:00+08:00","datePublished":"2025-02-19T11:00:00+08:00","description":"This post is based on my recent paper published in PNAS. If you can’t get past the paywall, here is a arXiv version. Big thanks to my collaborator Jiajun Song and Zhuoyan Xu!","headline":"Can LLMs solve novel tasks? Induction heads, composition, and out-of-distribution generalization","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/jekyll/update/2025/02/19/induction-heads.html"},"url":"http://localhost:4000/jekyll/update/2025/02/19/induction-heads.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-02-18T21:00:00-06:00","datePublished":"2025-02-18T21:00:00-06:00","description":"This post is based on my recent paper published in PNAS. If you can’t get past the paywall, here is a arXiv version. Big thanks to my collaborator Jiajun Song and Zhuoyan Xu!","headline":"Can LLMs solve novel tasks? Induction heads, composition, and out-of-distribution generalization","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/jekyll/update/2025/02/18/induction-heads.html"},"url":"http://localhost:4000/jekyll/update/2025/02/18/induction-heads.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Advancing Interpretability of Deep Learning" /></head>
 <body><header class="site-header" role="banner">
@@ -42,11 +42,10 @@
   <header class="post-header">
     <h1 class="post-title p-name" itemprop="name headline">Can LLMs solve novel tasks? Induction heads, composition, and out-of-distribution generalization</h1>
     <p class="post-meta">
-      <time class="dt-published" datetime="2025-02-19T11:00:00+08:00" itemprop="datePublished">Feb 19, 2025
+      <time class="dt-published" datetime="2025-02-18T21:00:00-06:00" itemprop="datePublished">Feb 18, 2025
       </time></p>
   </header>
 
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
   <div class="post-content e-content" itemprop="articleBody">
     <p>This post is based on my recent <a href="https://www.pnas.org/doi/10.1073/pnas.2417182122">paper</a> published in PNAS. If you can’t get past the paywall, here is a <a href="https://arxiv.org/abs/2408.09503">arXiv version</a>.
 Big thanks to my collaborator <a href="https://github.com/JiajunSong629">Jiajun Song</a> and <a href="https://pages.cs.wisc.edu/~zxu444/home/">Zhuoyan Xu</a>!</p>
@@ -228,7 +227,7 @@ It is still not clear to me how models pick up and memorize concepts, and use so
 </ul>
 
 
-  </div><a class="u-url" href="/jekyll/update/2025/02/19/induction-heads.html" hidden></a>
+  </div><a class="u-url" href="/jekyll/update/2025/02/18/induction-heads.html" hidden></a>
 </article>
 
       </div>
@@ -256,6 +255,18 @@ It is still not clear to me how models pick up and memorize concepts, and use so
   </div>
 
 </footer>
-</body>
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    
+
+  </body>
 
 </html>
